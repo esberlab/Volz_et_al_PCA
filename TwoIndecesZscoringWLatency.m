@@ -27,15 +27,25 @@ avgtrty = [] ;
 % Grab one rat at a time
 ratlst = table2array(unique(tbl(:,2))) ; % list of rat numbers
 
-for ii=1:length(ratlst)
-    %% Normalize by zscoring
-
+for ii=1:length(ratlst) %% normalizing
+    
 fstcol = tbl.('Rat') ;
 ratdata = tbl(find(fstcol==ratlst(ii)),:) ; 
 
+% Normalize by zscoring
 ratdata.normentries = zscore(ratdata.NumberOfEntries) ; % normalize entries
 ratdata.normpercent = zscore(ratdata.PercentBehavior) ; % grabbing percent, but taking into account the new column created in the previous line
 ratdata.normlatency = zscore(ratdata.Latency) ; % grabbing latency, but taking into account the new column created in the previous line
+
+% % Normalize by unit length
+% % centering
+% ratdata.NumberOfEntries = ratdata.NumberOfEntries - mean(ratdata.NumberOfEntries) ; 
+% ratdata.PercentBehavior = ratdata.PercentBehavior - mean(ratdata.PercentBehavior) ; 
+% ratdata.Latency = ratdata.Latency - mean(ratdata.Latency) ; 
+% % normalizing
+% ratdata.normentries = ratdata.NumberOfEntries / norm(ratdata.NumberOfEntries) ; % normalize entries
+% ratdata.normpercent = ratdata.PercentBehavior / norm(ratdata.PercentBehavior) ; % grabbing percent, but taking into account the new column created in the previous line
+% ratdata.normlatency = ratdata.Latency / norm(ratdata.Latency) ; % grabbing latency, but taking into account the new column created in the previous line
 
 %% Calculate BDI
 trty = unique(ratdata.EpochRole) ;
